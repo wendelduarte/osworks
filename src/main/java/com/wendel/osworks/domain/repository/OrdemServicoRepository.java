@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.wendel.osworks.domain.model.OrdemServico;
 
 @Repository
-public interface OrdemServicoRepository extends JpaRepository<OrdemServico, LongD> {
+public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Long> {
 
 }

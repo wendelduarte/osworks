@@ -10,6 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.wendel.osworks.domain.ValidationGroups;
 
 @Entity
 public class OrdemServico {
@@ -18,29 +27,40 @@ public class OrdemServico {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Valid
+	@ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class) //validacao de grupos
+	@NotNull
 	@ManyToOne
 	private Cliente cliente;
 	
+	@NotBlank
 	private String descricao;
+	
+	@NotNull
 	private BigDecimal preco;
 	
+	@JsonProperty(access = Access.READ_ONLY)
 	@Enumerated(EnumType.STRING)
 	private StatusOrdemServico status;
+	
+	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDateTime dataAbertura;
-	private LocalDateTime dataFinalizada;
+	
+	@JsonProperty(access = Access.READ_ONLY)
+	private LocalDateTime dataFinalizacao;
 	
 	public OrdemServico() {
 	}
 	
 	public OrdemServico(Long id, Cliente cliente, String descricao, BigDecimal preco, StatusOrdemServico status,
-			LocalDateTime dataAbertura, LocalDateTime dataFinalizada) {
+			LocalDateTime dataAbertura, LocalDateTime dataFinalizacao) {
 		this.id = id;
 		this.cliente = cliente;
 		this.descricao = descricao;
 		this.preco = preco;
 		this.status = status;
 		this.dataAbertura = dataAbertura;
-		this.dataFinalizada = dataFinalizada;
+		this.dataFinalizacao = dataFinalizacao;
 	}
 	
 	public Long getId() {
@@ -79,11 +99,11 @@ public class OrdemServico {
 	public void setDataAbertura(LocalDateTime dataAbertura) {
 		this.dataAbertura = dataAbertura;
 	}
-	public LocalDateTime getDataFinalizada() {
-		return dataFinalizada;
+	public LocalDateTime getDataFinalizacao() {
+		return dataFinalizacao;
 	}
-	public void setDataFinalizada(LocalDateTime dataFinalizada) {
-		this.dataFinalizada = dataFinalizada;
+	public void setDataFinalizada(LocalDateTime dataFinalizacao) {
+		this.dataFinalizacao = dataFinalizacao;
 	}
 	
 	@Override
